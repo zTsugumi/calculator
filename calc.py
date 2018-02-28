@@ -7,18 +7,22 @@ class BalancedTernary:
     dig2str = {1: '1', -1: 'T', 0: '0'}
     table = ((0, -1), (1, -1), (-1, 0), (0, 0), (1, 0), (-1, 1), (0, 1))
     
+    """Constructor"""
     def __init__(self, inp):
         if isinstance(inp, str):
             self.digits = [BalancedTernary.str2dig[c] for c in reversed(inp)]
         elif isinstance(inp, list):
             self.digits = list(inp)
 
+    """Return a string of instance"""
     def to_string(self):
         return "".join(BalancedTernary.dig2str[d] for d in reversed(self.digits))
 
+    """Return decimal number"""
     def to_int(self):
         return reduce(lambda y,x: x + 3 * y, reversed(self.digits), 0)
 
+    """Negative operator"""
     @staticmethod
     def _neg(digs):
         return [-d for d in digs]
@@ -26,6 +30,7 @@ class BalancedTernary:
     def __neg__(self):
         return BalancedTernary(BalancedTernary._neg(self.digits))
 
+    """Add operator"""
     @staticmethod
     def _add(a, b, c=0):
         """Check empty"""
@@ -43,10 +48,12 @@ class BalancedTernary:
     def __add__(self, b):
         return BalancedTernary(BalancedTernary._add(self.digits, b.digits))
     
+    """Sub operator"""
     def __sub__(self, b):
         return self + (-b)
         
 class CalcBalancedTernary:
+    """Input text to Entry"""
     def entry_text(self, text):
         self.text_field.configure(state='normal')
         self.my_text = self.text_field.get()
@@ -67,7 +74,7 @@ class CalcBalancedTernary:
         self.text_field.configure(state='disabled')
 
 
-    """v1"""
+    """Add and Sub operators v.1"""
     @staticmethod
     def rule(x, y):
         if x=='0' and y=='0': return '0'
@@ -145,7 +152,7 @@ class CalcBalancedTernary:
         c = c.rstrip('0')
         return c
 
-    """v2"""
+    """Add and Sub operators v.2"""
     @staticmethod
     def operator(a, b, sign):
         """Standardize"""
@@ -262,9 +269,9 @@ if __name__ == '__main__':
     """Create and Configure root"""
     root = Tk()
     root.title('Calculator')
-
-    """Create and Configure frame"""
     Grid.rowconfigure(root, 0, weight=1)
     Grid.columnconfigure(root, 0, weight=1)
+
+    """Create an calculator instance"""
     my_calc = CalcBalancedTernary(root)
     root.mainloop()
